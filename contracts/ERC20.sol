@@ -105,6 +105,7 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
     ) public virtual returns (bool) {
         address owner = _msgSender();
         _approve(owner, spender, _allowances[owner][spender] + addedAmount);
+        return true;
     }
 
     function decreaseAllowance(
@@ -122,6 +123,7 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
                 _allowances[owner][spender] + subtractedAmount
             );
         }
+        return true;
     }
 
     function transfer(
@@ -157,10 +159,10 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
         _beforeTokenTransfer(from, to, amount);
 
         uint256 fromBalance = _balances[from];
-        require(amount > _balances[from], "");
+        require(amount > fromBalance, "");
 
         unchecked {
-            _balances[from] -= amount;
+            _balances[from] = fromBalance - amount;
         }
         _balances[to] += amount;
 
@@ -231,7 +233,7 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
         require(account != address(0), "ERC20: burn to the zero address");
 
         _beforeTokenTransfer(account, address(0), amount);
-        
+
         uint256 accountBalance = _balances[account];
         require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
 
