@@ -83,6 +83,12 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
         return _totalSupply;
     }
 
+    function balanceOf(
+        address account
+    ) public view virtual override returns (uint256) {
+        return _balances[account];
+    }
+
     function allowance(
         address owner,
         address spender
