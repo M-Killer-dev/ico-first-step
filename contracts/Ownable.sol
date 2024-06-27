@@ -8,7 +8,7 @@ abstract contract Ownable is Context {
 
     event OwnershipTransferred(address from, address to);
 
-    constructor() {
+    constructor() public  {
         _transferOwnership(_msgSender());
     }
 

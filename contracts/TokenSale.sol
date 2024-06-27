@@ -36,7 +36,7 @@ contract TokenSale is Whitelist, Ownable, Pausable {
         uint256 _presaleRate,
         SimpleToken _token,
         uint256 _hardcap
-    ) payable {
+    ) payable public {
         require(_hardcap > 0, "hardcap must be bigger than zero");
         require(_presaleRate > 0, "presaleRate must be bigger than zero");
 

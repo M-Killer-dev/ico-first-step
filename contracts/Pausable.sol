@@ -11,7 +11,7 @@ abstract contract Pausable is Context {
     event Paused(address account);
     event Unpaused(address account);
 
-    constructor() {
+    constructor() public {
         _paused = false;
     }
 

@@ -16,7 +16,7 @@ contract SimpleToken is ERC20, Ownable {
     constructor(
         string memory _name,
         string memory _symbol
-    ) payable ERC20(_name, _symbol) {
+    ) payable ERC20(_name, _symbol) public {
         mint(msg.sender, 100000000000 * (10 ** uint256(decimals())));
     }
 

@@ -25,7 +25,7 @@ interface IERC20 {
     function allowance(
         address owner,
         address spender
-    ) external returns (uint256);
+    ) external view returns (uint256);
 
     //sets the 'amount' tokens that is allowed to 'spender'
     function approve(address spender, uint256 amount) external returns (bool);
@@ -62,7 +62,7 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
     string private _name;
     string private _symbol;
 
-    constructor(string memory name_, string memory symbol_) {
+    constructor(string memory name_, string memory symbol_) public {
         _name = name_;
         _symbol = symbol_;
     }
@@ -122,13 +122,11 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
         uint256 curAllowance = _allowances[owner][spender];
         require(subtractedAmount <= curAllowance, "ERC20: exceeds the balance");
 
-        unchecked {
-            _approve(
-                owner,
-                spender,
-                _allowances[owner][spender] + subtractedAmount
-            );
-        }
+        _approve(
+            owner,
+            spender,
+            _allowances[owner][spender] + subtractedAmount
+        );
         return true;
     }
 
@@ -167,9 +165,7 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
         uint256 fromBalance = _balances[from];
         require(amount > fromBalance, "");
 
-        unchecked {
-            _balances[from] = fromBalance - amount;
-        }
+        _balances[from] = fromBalance - amount;
         _balances[to] += amount;
 
         emit Transfer(from, to, amount);
@@ -216,9 +212,7 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
         if (curAllowance != type(uint256).max) {
             require(curAllowance >= amount, "ERC20: exceeds allowance");
 
-            unchecked {
-                _approve(owner, spender, curAllowance - amount);
-            }
+            _approve(owner, spender, curAllowance - amount);
         }
     }
 
@@ -243,9 +237,7 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
         uint256 accountBalance = _balances[account];
         require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
 
-        unchecked {
-            _balances[account] = accountBalance - amount;
-        }
+        _balances[account] = accountBalance - amount;
         _totalSupply -= amount;
 
         emit Transfer(address(0), account, amount);
@@ -255,5 +247,7 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
 
     function setPresaleContractAddress() external virtual returns (address) {}
 
-    function approvePresaleContract(uint256 _amount) external virtual returns (bool) {}
+    function approvePresaleContract(
+        uint256 _amount
+    ) external virtual returns (bool) {}
 }

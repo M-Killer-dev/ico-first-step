@@ -18,7 +18,7 @@ abstract contract Whitelist is Context {
     /**
      * @dev Initializes the contract in a disabled whitelist state.
      */
-    constructor() {
+    constructor() public {
         _whitelist = false;
     }
 
