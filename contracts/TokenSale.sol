@@ -17,6 +17,8 @@ contract TokenSale is Whitelist, Ownable {
 
     address payable presaleContract;
     address public presaleOwner;
+    uint256 public constant minContribLimit = 400000000000000000;
+    uint256 public constant maxContribLimit = 10000000000000000000;
 
     mapping(address => bool) public contractsWhiteList;
 
@@ -46,7 +48,15 @@ contract TokenSale is Whitelist, Ownable {
 
     function buyTokens() public payable onlyWhitelisted returns (bool) {
         require(msg.sender != address(0), "Sender is equal to Owner");
-        require(msg.value > 0 , "The coin is bigger than zero.");
+        require(msg.value > 0, "The coin is bigger than zero.");
+        require(
+            msg.value >= minContribLimit,
+            "Insuficient funds. You need to send more BNBs"
+        );
+        require(
+            msg.value <= maxContribLimit,
+            "Too much funds. You need to send less BNBs"
+        );
         require(
             presaleContractBNBBalance() <= hardcap,
             "You can't buy tokens any more. Hard Cap reached."
@@ -57,7 +67,10 @@ contract TokenSale is Whitelist, Ownable {
         );
 
         uint256 _buyTokenNum = tokenPrice(msg.value);
-        require(_buyTokenNum <= availableTokens(), "Exceed the available tokens.");
+        require(
+            _buyTokenNum <= availableTokens(),
+            "Exceed the available tokens."
+        );
         weiRased = weiRased + msg.value;
 
         token.transfer(msg.sender, _buyTokenNum);
