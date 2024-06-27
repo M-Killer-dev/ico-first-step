@@ -4,9 +4,10 @@
 pragma solidity ^0.8.0;
 
 import "./SimpleToken.sol";
+import "./Ownable.sol";
 import "./Whitelist.sol";
 
-contract TokenSale is Whitelist {
+contract TokenSale is Whitelist, Ownable {
     uint256 public rate;
     uint256 public weiRased;
     address public wallet;
@@ -44,8 +45,14 @@ contract TokenSale is Whitelist {
     ) public payable onlyWhitelisted returns (bool) {
         require(_beneficiary != address(0));
         require(msg.value != 0);
-        require(presaleContractBNBBalance() <= hardcap, "You can't buy tokens any more. Hard Cap reached.");
-        require(presaleContractBNBBalance() + msg.value <= hardcap, "You can't buy this amount of tokens. Hard Cap will be exceeded.");
+        require(
+            presaleContractBNBBalance() <= hardcap,
+            "You can't buy tokens any more. Hard Cap reached."
+        );
+        require(
+            presaleContractBNBBalance() + msg.value <= hardcap,
+            "You can't buy this amount of tokens. Hard Cap will be exceeded."
+        );
         uint256 tokens = msg.value * rate;
         weiRased = weiRased + msg.value;
 
@@ -54,25 +61,25 @@ contract TokenSale is Whitelist {
         return true;
     }
 
-    function addToWhiteList(address _address) public {
+    function addToWhiteList(address _address) public onlyOwner {
         contractsWhiteList[_address] = true;
     }
 
-    function removeToWhiteList(address _address) public {
+    function removeToWhiteList(address _address) public onlyOwner {
         contractsWhiteList[_address] = false;
     }
 
-    function addManyToWhitelist(address[] memory _addresses) public {
+    function addManyToWhitelist(address[] memory _addresses) public onlyOwner {
         for (uint256 i = 0; i < _addresses.length; i++) {
             contractsWhiteList[_addresses[i]] = true;
         }
     }
 
-    function enableWhitelist() public {
+    function enableWhitelist() public onlyOwner {
         _enableWhitelist();
     }
 
-    function disableWhitelist() public {
+    function disableWhitelist() public onlyOwner {
         _disableWhitelist();
     }
 
