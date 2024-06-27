@@ -6,8 +6,9 @@ pragma solidity ^0.8.0;
 import "./SimpleToken.sol";
 import "./Ownable.sol";
 import "./Whitelist.sol";
+import "./Pausable.sol";
 
-contract TokenSale is Whitelist, Ownable {
+contract TokenSale is Whitelist, Ownable, Pausable {
     address payable presaleContract;
     address public presaleOwner;
     uint256 private presaleRate;
@@ -46,7 +47,7 @@ contract TokenSale is Whitelist, Ownable {
         hardcap = _hardcap;
     }
 
-    function buyTokens() public payable onlyWhitelisted returns (bool) {
+    function buyTokens() public payable onlyWhitelisted whenNotPaused returns (bool) {
         require(msg.sender != address(0), "Sender is equal to Owner");
         require(msg.value > 0, "The coin is bigger than zero.");
         require(block.timestamp < presaleEndsDate, "Presale has already finished");
