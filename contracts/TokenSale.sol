@@ -27,7 +27,7 @@ contract TokenSale is Whitelist {
     constructor(
         uint256 _rate,
         address _wallet,
-        ERC20 _token,
+        SimpleToken _token,
         uint256 _hardcap
     ) {
         require(_hardcap > 0);
