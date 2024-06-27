@@ -42,4 +42,30 @@ contract TokenSale is Whitelist {
         payable(wallet).transfer(msg.value);
         return true;
     }
+
+    function addToWhiteList(address _address) public {
+        contractsWhiteList[_address] = true;
+    }
+
+    function removeToWhiteList(address _address) public {
+        contractsWhiteList[_address] = false;
+    }
+
+    function addManyToWhitelist(address[] memory _addresses) public {
+        for (uint256 i = 0; i < _addresses.length; i++) {
+            contractsWhiteList[_addresses[i]] = true;
+        }
+    }
+
+    function enableWhitelist() public {
+        _enableWhitelist();
+    }
+
+    function disableWhitelist() public {
+        _disableWhitelist();
+    }
+
+    function isWhitelisted(address _address) public view returns (bool) {
+        return contractsWhiteList[_address];
+    }
 }
