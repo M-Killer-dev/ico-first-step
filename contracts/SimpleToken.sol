@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
-pragma solidity ^0.8.0;
+pragma solidity >=0.4.22 <0.9.0;
 
 import "./ERC20.sol";
 import "./Ownable.sol";
@@ -13,7 +13,10 @@ contract SimpleToken is ERC20, Ownable {
 
     bool private approvePresaleContractIsAllowed = true;
 
-    constructor() payable ERC20("SimpleToken", "STN") {
+    constructor(
+        string memory _name,
+        string memory _symbol
+    ) payable ERC20(_name, _symbol) {
         mint(msg.sender, 100000000000 * (10 ** uint256(decimals())));
     }
 
@@ -55,7 +58,7 @@ contract SimpleToken is ERC20, Ownable {
         return true;
     }
 
-    function getPresaleContractAddress() public view returns (address){
-        return presaleContractAddress; 
+    function getPresaleContractAddress() public view returns (address) {
+        return presaleContractAddress;
     }
 }
