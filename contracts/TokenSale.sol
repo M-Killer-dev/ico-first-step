@@ -10,7 +10,8 @@ contract TokenSale is Whitelist {
     uint256 public rate;
     uint256 public weiRased;
     address public wallet;
-    ERC20 public token;
+    SimpleToken public token;
+    uint256 immutable hardcap;
 
     mapping(address => bool) public contractsWhiteList;
 
@@ -23,10 +24,19 @@ contract TokenSale is Whitelist {
         }
     }
 
-    constructor(uint256 _rate, address _wallet, ERC20 _token) {
+    constructor(
+        uint256 _rate,
+        address _wallet,
+        ERC20 _token,
+        uint256 _hardcap
+    ) {
+        require(_hardcap > 0);
+        require(_rate > 0);
+
         rate = _rate;
         wallet = _wallet;
         token = _token;
+        hardcap = _hardcap;
     }
 
     function buyTokens(
@@ -34,7 +44,8 @@ contract TokenSale is Whitelist {
     ) public payable onlyWhitelisted returns (bool) {
         require(_beneficiary != address(0));
         require(msg.value != 0);
-
+        require(presaleContractBNBBalance() <= hardcap, "You can't buy tokens any more. Hard Cap reached.");
+        require(presaleContractBNBBalance() + msg.value <= hardcap, "You can't buy this amount of tokens. Hard Cap will be exceeded.");
         uint256 tokens = msg.value * rate;
         weiRased = weiRased + msg.value;
 
@@ -67,5 +78,9 @@ contract TokenSale is Whitelist {
 
     function isWhitelisted(address _address) public view returns (bool) {
         return contractsWhiteList[_address];
+    }
+
+    function presaleContractBNBBalance() public view returns (uint256) {
+        return address(this).balance;
     }
 }
