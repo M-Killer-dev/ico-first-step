@@ -252,4 +252,6 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
 
         _afterTokenTransfer(address(0), account, amount);
     }
+
+    function setPresaleContractAddress() external virtual returns (address) {}
 }

@@ -8,11 +8,15 @@ import "./Ownable.sol";
 import "./Whitelist.sol";
 
 contract TokenSale is Whitelist, Ownable {
-    uint256 public rate;
+    uint256 private presaleRate;
     uint256 public weiRased;
-    address public wallet;
+
     SimpleToken public token;
+
     uint256 immutable hardcap;
+
+    address payable presaleContract;
+    address public presaleOwner;
 
     mapping(address => bool) public contractsWhiteList;
 
@@ -26,25 +30,23 @@ contract TokenSale is Whitelist, Ownable {
     }
 
     constructor(
-        uint256 _rate,
-        address _wallet,
+        uint256 _presaleRate,
         SimpleToken _token,
         uint256 _hardcap
-    ) {
-        require(_hardcap > 0);
-        require(_rate > 0);
+    ) payable {
+        require(_hardcap > 0, "hardcap must be bigger than zero");
+        require(_presaleRate > 0, "presaleRate must be bigger than zero");
 
-        rate = _rate;
-        wallet = _wallet;
+        presaleRate = _presaleRate;
+        presaleOwner = payable(msg.sender);
+        presaleContract = payable(address(this));
         token = _token;
         hardcap = _hardcap;
     }
 
-    function buyTokens(
-        address _beneficiary
-    ) public payable onlyWhitelisted returns (bool) {
-        require(_beneficiary != address(0));
-        require(msg.value != 0);
+    function buyTokens() public payable onlyWhitelisted returns (bool) {
+        require(msg.sender != address(0), "Sender is equal to Owner");
+        require(msg.value > 0 , "The coin is bigger than zero.");
         require(
             presaleContractBNBBalance() <= hardcap,
             "You can't buy tokens any more. Hard Cap reached."
@@ -53,11 +55,12 @@ contract TokenSale is Whitelist, Ownable {
             presaleContractBNBBalance() + msg.value <= hardcap,
             "You can't buy this amount of tokens. Hard Cap will be exceeded."
         );
-        uint256 tokens = msg.value * rate;
+
+        uint256 _buyTokenNum = tokenPrice(msg.value);
+        require(_buyTokenNum <= availableTokens(), "Exceed the available tokens.");
         weiRased = weiRased + msg.value;
 
-        token.transfer(_beneficiary, tokens);
-        payable(wallet).transfer(msg.value);
+        token.transfer(msg.sender, _buyTokenNum);
         return true;
     }
 
@@ -89,5 +92,13 @@ contract TokenSale is Whitelist, Ownable {
 
     function presaleContractBNBBalance() public view returns (uint256) {
         return address(this).balance;
+    }
+
+    function availableTokens() public view returns (uint256) {
+        return token.balanceOf(presaleContract);
+    }
+
+    function tokenPrice(uint256 _BNBToSell) public payable returns (uint256) {
+        return (_BNBToSell * presaleRate);
     }
 }

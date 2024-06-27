@@ -8,6 +8,7 @@ import "./ERC20.sol";
 contract SimpleToken is ERC20 {
     uint256 private lockEndsDate = 548 days; // Lock time is 1 year and a half
     uint256 public lockDate;
+    address private presaleContractAddress;
 
     constructor() payable ERC20("SimpleToken", "STN") {
         mint(msg.sender, 100000000000 * (10 ** uint256(decimals())));
@@ -24,5 +25,14 @@ contract SimpleToken is ERC20 {
 
     function balance() public view returns (uint256) {
         return address(this).balance;
+    }
+
+    function setPresaleContractAddress() external override returns (address) {
+        require(
+            presaleContractAddress == address(0),
+            "Address already initialized"
+        );
+        presaleContractAddress = msg.sender;
+        return presaleContractAddress;
     }
 }
