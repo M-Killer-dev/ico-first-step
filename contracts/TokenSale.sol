@@ -8,17 +8,17 @@ import "./Ownable.sol";
 import "./Whitelist.sol";
 
 contract TokenSale is Whitelist, Ownable {
+    address payable presaleContract;
+    address public presaleOwner;
     uint256 private presaleRate;
     uint256 public weiRased;
 
     SimpleToken public token;
 
     uint256 immutable hardcap;
-
-    address payable presaleContract;
-    address public presaleOwner;
     uint256 public constant minContribLimit = 400000000000000000;
     uint256 public constant maxContribLimit = 10000000000000000000;
+    uint256 public presaleEndsDate = block.timestamp + 30 days;
 
     mapping(address => bool) public contractsWhiteList;
 
@@ -49,6 +49,7 @@ contract TokenSale is Whitelist, Ownable {
     function buyTokens() public payable onlyWhitelisted returns (bool) {
         require(msg.sender != address(0), "Sender is equal to Owner");
         require(msg.value > 0, "The coin is bigger than zero.");
+        require(block.timestamp < presaleEndsDate, "Presale has already finished");
         require(
             msg.value >= minContribLimit,
             "Insuficient funds. You need to send more BNBs"
