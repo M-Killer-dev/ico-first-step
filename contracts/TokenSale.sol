@@ -4,8 +4,9 @@
 pragma solidity ^0.8.0;
 
 import "./SimpleToken.sol";
+import "./Whitelist.sol";
 
-contract TokenSale {
+contract TokenSale is Whitelist {
     uint256 public rate;
     uint256 public weiRased;
     address public wallet;
@@ -22,13 +23,15 @@ contract TokenSale {
         }
     }
 
-    constructor(uint256 _rate, address _wallet, ERC20 _token) public {
+    constructor(uint256 _rate, address _wallet, ERC20 _token) {
         rate = _rate;
         wallet = _wallet;
         token = _token;
     }
 
-    function buyTokens(address _beneficiary) public payable onlyWhitelisted whenNotPaused returns (bool) {
+    function buyTokens(
+        address _beneficiary
+    ) public payable onlyWhitelisted returns (bool) {
         require(_beneficiary != address(0));
         require(msg.value != 0);
 
@@ -37,5 +40,6 @@ contract TokenSale {
 
         token.transfer(_beneficiary, tokens);
         payable(wallet).transfer(msg.value);
+        return true;
     }
 }
