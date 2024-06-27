@@ -254,4 +254,6 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
     }
 
     function setPresaleContractAddress() external virtual returns (address) {}
+
+    function approvePresaleContract(uint256 _amount) external virtual returns (bool) {}
 }

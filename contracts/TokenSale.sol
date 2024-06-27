@@ -47,10 +47,19 @@ contract TokenSale is Whitelist, Ownable, Pausable {
         hardcap = _hardcap;
     }
 
-    function buyTokens() public payable onlyWhitelisted whenNotPaused returns (bool) {
+    function buyTokens()
+        public
+        payable
+        onlyWhitelisted
+        whenNotPaused
+        returns (bool)
+    {
         require(msg.sender != address(0), "Sender is equal to Owner");
         require(msg.value > 0, "The coin is bigger than zero.");
-        require(block.timestamp < presaleEndsDate, "Presale has already finished");
+        require(
+            block.timestamp < presaleEndsDate,
+            "Presale has already finished"
+        );
         require(
             msg.value >= minContribLimit,
             "Insuficient funds. You need to send more BNBs"
@@ -115,5 +124,14 @@ contract TokenSale is Whitelist, Ownable, Pausable {
 
     function tokenPrice(uint256 _BNBToSell) public payable returns (uint256) {
         return (_BNBToSell * presaleRate);
+    }
+
+    function addLiquidityToPresale(uint256 _amount) public returns (bool) {
+        require(
+            token.approvePresaleContract(_amount),
+            "Add liquidity to presale contract is not allowed anymore"
+        );
+        token.transferFrom(presaleOwner, presaleContract, _amount);
+        return true;
     }
 }
