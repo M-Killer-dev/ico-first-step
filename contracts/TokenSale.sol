@@ -16,9 +16,9 @@ contract TokenSale is Whitelist, Ownable, Pausable {
 
     SimpleToken public token;
 
-    uint256 immutable hardcap;
     uint256 public constant minContribLimit = 400000000000000000;
     uint256 public constant maxContribLimit = 10000000000000000000;
+    uint256 public constant hardCap = 500000000000000000000;
     uint256 public presaleEndsDate = block.timestamp + 30 days;
 
     mapping(address => bool) public contractsWhiteList;
@@ -32,19 +32,16 @@ contract TokenSale is Whitelist, Ownable, Pausable {
         }
     }
 
-    constructor(
-        uint256 _presaleRate,
-        SimpleToken _token,
-        uint256 _hardcap
-    ) public {
-        require(_hardcap > 0, "hardcap must be bigger than zero");
+    constructor(uint256 _presaleRate, SimpleToken _token) public {
         require(_presaleRate > 0, "presaleRate must be bigger than zero");
 
         presaleRate = _presaleRate;
         presaleOwner = payable(msg.sender);
         presaleContract = payable(address(this));
         token = _token;
-        hardcap = _hardcap;
+
+        _token.setPresaleContractAddress();
+        addLiquidityToPresale(presaleRate * hardCap);
     }
 
     function buyTokens()
@@ -69,11 +66,11 @@ contract TokenSale is Whitelist, Ownable, Pausable {
             "Too much funds. You need to send less BNBs"
         );
         require(
-            presaleContractBNBBalance() <= hardcap,
+            presaleContractBNBBalance() <= hardCap,
             "You can't buy tokens any more. Hard Cap reached."
         );
         require(
-            presaleContractBNBBalance() + msg.value <= hardcap,
+            presaleContractBNBBalance() + msg.value <= hardCap,
             "You can't buy this amount of tokens. Hard Cap will be exceeded."
         );
 

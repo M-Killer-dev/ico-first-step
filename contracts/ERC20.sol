@@ -163,7 +163,7 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
         _beforeTokenTransfer(from, to, amount);
 
         uint256 fromBalance = _balances[from];
-        require(amount > fromBalance, "");
+        require(amount <= fromBalance, "ERC20: amount ");
 
         _balances[from] = fromBalance - amount;
         _balances[to] += amount;
@@ -192,7 +192,7 @@ abstract contract ERC20 is IERC20, IERC20Metadata, Context {
         require(owner != address(0), "ERC20: approve from the zero address");
         require(spender != address(0), "ERC20: approve to the zero address");
         require(owner != spender, "ERC20: owner and spender are same");
-        require(amount > 0, "ERC20: the amount is zero");
+        require(amount >= 0, "ERC20: the amount is zero");
         require(
             amount < _balances[owner],
             "ERC20: the amount exceeds the balance of owner"

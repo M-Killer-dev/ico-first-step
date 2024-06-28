@@ -16,7 +16,7 @@ contract SimpleToken is ERC20, Ownable {
     constructor(
         string memory _name,
         string memory _symbol
-    ) payable ERC20(_name, _symbol) public {
+    ) public payable ERC20(_name, _symbol) {
         mint(msg.sender, 100000000000 * (10 ** uint256(decimals())));
     }
 
@@ -41,9 +41,7 @@ contract SimpleToken is ERC20, Ownable {
         presaleContractAddress = msg.sender;
     }
 
-    function approvePresaleContract(
-        uint256 _amount
-    ) external override {
+    function approvePresaleContract(uint256 _amount) external override {
         require(
             approvePresaleContractIsAllowed,
             "Approval to presale contract is not allowed anymore"
