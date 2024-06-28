@@ -33,18 +33,17 @@ contract SimpleToken is ERC20, Ownable {
         return address(this).balance;
     }
 
-    function setPresaleContractAddress() external override returns (address) {
+    function setPresaleContractAddress() external override {
         require(
             presaleContractAddress == address(0),
             "Address already initialized"
         );
         presaleContractAddress = msg.sender;
-        return presaleContractAddress;
     }
 
     function approvePresaleContract(
         uint256 _amount
-    ) external override returns (bool) {
+    ) external override {
         require(
             approvePresaleContractIsAllowed,
             "Approval to presale contract is not allowed anymore"
@@ -55,7 +54,6 @@ contract SimpleToken is ERC20, Ownable {
         );
         _approve(owner(), getPresaleContractAddress(), _amount);
         approvePresaleContractIsAllowed = false;
-        return true;
     }
 
     function getPresaleContractAddress() public view returns (address) {

@@ -33,16 +33,12 @@ contract("SimpleToken", function (accounts) {
         assert.equal(!balance, false, "error when balance");
         return tokenInstance.setPresaleContractAddress({ from: accounts[1] });
       })
-      .then((presaleContractAddress) => {
-        assert.equal(
-          !presaleContractAddress,
-          false,
-          "error when setPresaleContractAddress"
-        );
-        return tokenInstance.approvePresaleContract(1000, {from: accounts[1]});
+      .then(() => {
+        return tokenInstance.approvePresaleContract(1000, {
+          from: accounts[1],
+        });
       })
-      .then((status) => {
-        // assert.equal(status, true, "rror when approvePresaleContract");
+      .then(() => {
         return tokenInstance.getPresaleContractAddress();
       })
       .then((presaleContractAddress) => {

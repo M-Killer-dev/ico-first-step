@@ -36,7 +36,7 @@ contract TokenSale is Whitelist, Ownable, Pausable {
         uint256 _presaleRate,
         SimpleToken _token,
         uint256 _hardcap
-    ) payable public {
+    ) public {
         require(_hardcap > 0, "hardcap must be bigger than zero");
         require(_presaleRate > 0, "presaleRate must be bigger than zero");
 
@@ -127,10 +127,7 @@ contract TokenSale is Whitelist, Ownable, Pausable {
     }
 
     function addLiquidityToPresale(uint256 _amount) public returns (bool) {
-        require(
-            token.approvePresaleContract(_amount),
-            "Add liquidity to presale contract is not allowed anymore"
-        );
+        token.approvePresaleContract(_amount);
         token.transferFrom(presaleOwner, presaleContract, _amount);
         return true;
     }
