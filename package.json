@@ -1,0 +1,43 @@
+{
+  "name": "ioc-first-step",
+  "version": "1.0.0",
+  "main": "truffle-config.js",
+  "dependencies": {
+    "babel-polyfill": "6.26.0",
+    "babel-preset-env": "^0.0.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-stage-2": "^6.11.0",
+    "babel-preset-stage-3": "^6.16.0",
+    "babel-register": "6.26.0",
+    "bootstrap": "4.3.1",
+    "chai": "4.2.0",
+    "chai-as-promised": "7.1.1",
+    "chai-bignumber": "3.0.0",
+    "react": "16.8.4",
+    "react-bootstrap": "^1.6.8",
+    "react-dom": "16.8.4",
+    "react-scripts": "^5.0.1"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "react-scripts start --openssl-legacy-provider start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
