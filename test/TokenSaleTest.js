@@ -33,7 +33,7 @@ contract("TokenSale", function (accounts) {
     assert.equal(a_tokens > 0, true, "error in availableTokens func");
 
     let t_price = await tokenInstance.tokenPrice(1000);
-    ssert.equal(t_price.words[0] > 0, true, "error in tokenPrice func");
+    assert.equal(t_price.words[0] > 0, true, "error in tokenPrice func");
 
     tokenInstance.addLiquidityToPresale(1000);
 
