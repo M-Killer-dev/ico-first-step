@@ -49,7 +49,6 @@ contract TokenSale is Whitelist, Ownable, Pausable {
         payable
         onlyWhitelisted
         whenNotPaused
-        returns (bool)
     {
         require(msg.sender != address(0), "Sender is equal to Owner");
         require(msg.value > 0, "The coin is bigger than zero.");
@@ -82,7 +81,6 @@ contract TokenSale is Whitelist, Ownable, Pausable {
         weiRased = weiRased + msg.value;
 
         token.transfer(msg.sender, _buyTokenNum);
-        return true;
     }
 
     function addToWhiteList(address _address) public onlyOwner {
@@ -119,7 +117,7 @@ contract TokenSale is Whitelist, Ownable, Pausable {
         return token.balanceOf(presaleContract);
     }
 
-    function tokenPrice(uint256 _BNBToSell) public payable returns (uint256) {
+    function tokenPrice(uint256 _BNBToSell) public view returns (uint256) {
         return (_BNBToSell * presaleRate);
     }
 
