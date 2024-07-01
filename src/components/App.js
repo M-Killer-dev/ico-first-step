@@ -5,6 +5,7 @@ import SimpleToken from "../abis/SimpleToken.json";
 import TokenSale from "../abis/TokenSale.json";
 import Navbar from "./layout/Navbar";
 import MyAccount from "./pages/MyAccount";
+import ContractInfo from "./pages/ContractInfo";
 
 const App = () => {
   const [simpleToken, setSimpleToken] = useState();
@@ -54,6 +55,7 @@ const App = () => {
   return (
     <div>
       <Navbar account={account} accounts={accounts} setAccount={setAccount} />
+      <ContractInfo simpleToken={simpleToken} />
       <MyAccount account={account} simpleToken={simpleToken} />
     </div>
   );
