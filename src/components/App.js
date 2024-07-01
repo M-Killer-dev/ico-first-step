@@ -59,19 +59,17 @@ const App = () => {
   return (
     <>
       <Navbar account={account} accounts={accounts} setAccount={setAccount} />
-      <div className="d-flex flex-row">
-        <div className="mr-4">
-          <ContractInfo simpleToken={simpleToken} />
-          <TokenSaleInfo account={account} tokenSale={tokenSale} />
-          <MyAccount account={account} simpleToken={simpleToken} />
-          <SimpleTokenActions
-            account={account}
-            accounts={accounts}
-            simpleToken={simpleToken}
-          />
-          <ContractLog simpleToken={simpleToken} tokenSale={tokenSale} />
-        </div>
+      <div>
         <AccountsInfo accounts={accounts} simpleToken={simpleToken} />
+        <ContractInfo simpleToken={simpleToken} />
+        <TokenSaleInfo account={account} tokenSale={tokenSale} />
+        <MyAccount account={account} simpleToken={simpleToken} />
+        <SimpleTokenActions
+          account={account}
+          accounts={accounts}
+          simpleToken={simpleToken}
+        />
+        <ContractLog simpleToken={simpleToken} tokenSale={tokenSale} />
       </div>
     </>
   );
