@@ -17,7 +17,7 @@ export default function ContractInfo({ simpleToken }) {
 
   return (
     <div>
-        <h2>SimpleToken Contract</h2>
+      <h2>SimpleToken Contract</h2>
       <div className="d-flex">
         <label>balance : &nbsp;</label>
         <label></label>
