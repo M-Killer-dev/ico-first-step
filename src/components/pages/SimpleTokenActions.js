@@ -16,12 +16,7 @@ export default function SimpleTokenActions({ account, accounts, simpleToken }) {
           .burn(web3.utils.toBigInt(burnAmount))
           .send({ from: account });
       } catch (error) {
-        // Handle the require error
-        if (error.message.includes("Value must be greater than zero")) {
-          console.error("Error: The value must be greater than zero.");
-        } else {
-          console.error("An error occurred:", error);
-        }
+        console.error("An error occurred:", error);
       }
     }
   };
@@ -35,8 +30,14 @@ export default function SimpleTokenActions({ account, accounts, simpleToken }) {
   };
 
   const handleTransfer = () => {
-    if (simpleToken) {
-      simpleToken.methods.transfer(receiver, transferAmount).call();
+    if (simpleToken && account) {
+      try {
+        simpleToken.methods
+          .transfer(receiver, web3.utils.toBigInt(transferAmount))
+          .send({ from: account });
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
     }
   };
 
