@@ -11,10 +11,10 @@ export default function MyAccount({ account, simpleToken }) {
         setBalance(b);
       });
       simpleToken.methods
-        .balanceOf(account)
+        .balanceOf(account.toString())
         .call()
         .then((tkn) => {
-          setToken(tkn);
+          setToken(tkn.toString());
         });
     }
   }, [account]);
