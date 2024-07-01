@@ -9,9 +9,20 @@ export default function SimpleTokenActions({ account, accounts, simpleToken }) {
     setBurnAmount(e.target.value);
   };
 
-  const handleBurn = () => {
-    if (simpleToken) {
-      simpleToken.methods.burn(burnAmount).call();
+  const handleBurn = async () => {
+    if (simpleToken && account) {
+      try {
+        await simpleToken.methods
+          .burn(web3.utils.toBigInt(burnAmount))
+          .send({ from: account });
+      } catch (error) {
+        // Handle the require error
+        if (error.message.includes("Value must be greater than zero")) {
+          console.error("Error: The value must be greater than zero.");
+        } else {
+          console.error("An error occurred:", error);
+        }
+      }
     }
   };
 
@@ -57,7 +68,7 @@ export default function SimpleTokenActions({ account, accounts, simpleToken }) {
           ))}
         </select>
         <button className="btn btn-primary" onClick={handleTransfer}>
-          Burn
+          Transfer
         </button>
       </div>
     </div>

@@ -19,6 +19,10 @@ export default function Navbar({ setAccount, accounts, account }) {
         <label>Selected : &nbsp;</label>
         <label>{account}</label>
       </div>
+      <div className="selected-account">
+        <label>Owner : &nbsp;</label>
+        <label>{accounts[0]}</label>
+      </div>
     </div>
   );
 }
