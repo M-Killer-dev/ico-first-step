@@ -3,10 +3,12 @@ import "./App.css";
 import Web3 from "web3";
 import SimpleToken from "../abis/SimpleToken.json";
 import TokenSale from "../abis/TokenSale.json";
+import Navbar from "./layout/Navbar";
+import MyAccount from "./pages/MyAccount";
 
 const App = () => {
-  const [simpleToken, setSimpleToken] = useState({});
-  const [tokenSale, setTokenSale] = useState({});
+  const [simpleToken, setSimpleToken] = useState();
+  const [tokenSale, setTokenSale] = useState();
   const [accounts, setAccounts] = useState([]);
   const [account, setAccount] = useState();
 
@@ -25,9 +27,8 @@ const App = () => {
 
   const loadBlockchainData = async () => {
     const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    setAccounts(accounts);
-    setAccount(accounts[0]);
+    const _accounts = await web3.eth.getAccounts();
+    setAccounts(_accounts);
 
     const networkId = await web3.eth.net.getId();
     const simpleTokenContractAddress = SimpleToken.networks[networkId].address;
@@ -50,7 +51,12 @@ const App = () => {
     loadBlockchainData();
   }, []);
 
-  return <div></div>;
+  return (
+    <div>
+      <Navbar account={account} accounts={accounts} setAccount={setAccount} />
+      <MyAccount account={account} simpleToken={simpleToken} />
+    </div>
+  );
 };
 
 export default App;
