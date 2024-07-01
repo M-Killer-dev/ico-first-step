@@ -9,6 +9,7 @@ import ContractInfo from "./pages/ContractInfo";
 import TokenSaleInfo from "./pages/TokenSaleInfo";
 import ContractLog from "./pages/ContractLog";
 import SimpleTokenActions from "./pages/SimpleTokenActions";
+import AccountsInfo from "./pages/AccountsInfo";
 
 const App = () => {
   const [simpleToken, setSimpleToken] = useState();
@@ -56,17 +57,20 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      <Navbar account={account} accounts={accounts} setAccount={setAccount} />
-      <ContractInfo simpleToken={simpleToken} />
-      <TokenSaleInfo account={account} tokenSale={tokenSale} />
-      <MyAccount account={account} simpleToken={simpleToken} />
-      <SimpleTokenActions
-        account={account}
-        accounts={accounts}
-        simpleToken={simpleToken}
-      />
-      <ContractLog simpleToken={simpleToken} tokenSale={tokenSale} />
+    <div className="d-flex flex-row">
+      <div>
+        <Navbar account={account} accounts={accounts} setAccount={setAccount} />
+        <ContractInfo simpleToken={simpleToken} />
+        <TokenSaleInfo account={account} tokenSale={tokenSale} />
+        <MyAccount account={account} simpleToken={simpleToken} />
+        <SimpleTokenActions
+          account={account}
+          accounts={accounts}
+          simpleToken={simpleToken}
+        />
+        <ContractLog simpleToken={simpleToken} tokenSale={tokenSale} />
+      </div>
+      <AccountsInfo accounts={accounts} simpleToken={simpleToken} />
     </div>
   );
 };
