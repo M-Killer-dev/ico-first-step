@@ -101,7 +101,6 @@ export default function SimpleTokenActions({ account, accounts, simpleToken }) {
     }
   };
 
-  useEffect(() => {}, []);
   return (
     <div>
       <div className="burn d-flex">

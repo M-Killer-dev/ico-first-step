@@ -10,6 +10,7 @@ import TokenSaleInfo from "./pages/TokenSaleInfo";
 import ContractLog from "./pages/ContractLog";
 import SimpleTokenActions from "./pages/SimpleTokenActions";
 import AccountsInfo from "./pages/AccountsInfo";
+import TokenSaleActions from "./pages/TokenSaleActions";
 
 const App = () => {
   const [simpleToken, setSimpleToken] = useState();
@@ -62,12 +63,21 @@ const App = () => {
       <div>
         <AccountsInfo accounts={accounts} simpleToken={simpleToken} />
         <ContractInfo simpleToken={simpleToken} />
-        <TokenSaleInfo account={account} tokenSale={tokenSale} />
+        <TokenSaleInfo
+          account={account}
+          accounts={accounts}
+          tokenSale={tokenSale}
+        />
         <MyAccount account={account} simpleToken={simpleToken} />
         <SimpleTokenActions
           account={account}
           accounts={accounts}
           simpleToken={simpleToken}
+        />
+        <TokenSaleActions
+          account={account}
+          accounts={accounts}
+          tokenSale={tokenSale}
         />
         <ContractLog simpleToken={simpleToken} tokenSale={tokenSale} />
       </div>
